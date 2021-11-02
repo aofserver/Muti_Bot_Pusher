@@ -46,6 +46,16 @@ edit file `linebot_pusher/core/settings.py` to set `host,user,password,database,
 edit file `linebot_pusher/app/huawei_cloud_obs.py` to set `host,user,password,database,port` in `line 26`
 ```
 
+# Config line bot
+```
+edit file `linebot_pusher/app/linebotapi.py` to set `Bot_basic_id,Channel_secret,Channel_access_toke` in `line 5`
+```
+
+# Config pusher
+```
+edit file `linebot_pusher/app/views.py` to set `Bot_basic_id,Channel_secret,Channel_access_toke` in `line 21`
+```
+
 
 # Migrations
 ```
