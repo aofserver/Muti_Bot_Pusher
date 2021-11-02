@@ -23,12 +23,12 @@ from obs import ObsClient, CorsRule, const
 from obs.convertor import Convertor
 from obs.util import base64_encode, md5_encode
 
-AK = 'RO0ETKWTP3WN83TIS5SW'
-SK = '74GATHX9jsQn0xXf2HYFEJZ9Y35PDaa3FmcRPHR9'
-bucketName = 'lineapibkk'
+AK = ''
+SK = ''
+bucketName = ''
 objectKey = ''
-server = 'obs.ap-southeast-2.myhuaweicloud.com'
-AccessDomainName = "lineapibkk.obs.ap-southeast-2.myhuaweicloud.com"
+server = ''
+AccessDomainName = ""
 
 IS_PYTHON2 = sys.version_info.major == 2 or sys.version < '3'
 
