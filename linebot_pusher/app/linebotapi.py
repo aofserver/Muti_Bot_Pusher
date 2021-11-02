@@ -8,7 +8,7 @@ Channel_access_token = ""
 
 def LineNotify(msg):
   url = 'https://notify-api.line.me/api/notify'
-  token = 'IkgTg38dY66EjKAewQHCFwmZ3e47bjbBFqdsap8UKK8' #Line Token Notify
+  token = '' #Line Token Notify
   headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
   r = requests.post(url, headers=headers, data = {'message':msg})
 
