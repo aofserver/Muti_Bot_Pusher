@@ -43,7 +43,7 @@ edit file `pusher_center/app/database.py` to set `host,user,password,database,po
 
 # Run
 ```
-$ python manage.py runserver 0.0.0.0:8000
+$ python3 manage.py runserver 0.0.0.0:8000
 ```
 
 
