@@ -2,11 +2,9 @@
 import json
 import requests
 
-
-
-Bot_basic_id = "@678tbhfr"
-Channel_secret = "8d9dea0ac4e1dca18b20b8817bed4cb1"
-Channel_access_token = 'MEHHmo0chIX8ldVTNcHXeVw5XSjhlFY7jWcOCGf/w0aaWk3qfCKG3uGAfEBrFKNPp2vwgnxbni2tvWMr+hzRD7BMEx2fPlpHq5ouPfR6BDtltkcyuvkkh8ledsXWO6VTMhWD4X7nmuk4YDLF0PLGJwdB04t89/1O/w1cDnyilFU='
+Bot_basic_id = ""
+Channel_secret = ""
+Channel_access_token = ""
 
 def LineNotify(msg):
   url = 'https://notify-api.line.me/api/notify'
