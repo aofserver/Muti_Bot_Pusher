@@ -19,10 +19,10 @@ from decimal import *
 
 
 pusher_client = pusher.Pusher(
-  app_id='1273244',
-  key='5e233fc432b782f0a272',
-  secret='b7036c110daa457cdefd',
-  cluster='ap1',
+  app_id='',
+  key='',
+  secret='',
+  cluster='',
   ssl=True
 )
 
