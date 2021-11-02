@@ -44,7 +44,7 @@ edit file `linebot_pusher/core/settings.py` to set `host,user,password,database,
 # Migrations
 ```
 $ python manage.py makemigrations
-$ python manage.py migrate
+$ python manage.py migrate app
 ```
 
 # Run
