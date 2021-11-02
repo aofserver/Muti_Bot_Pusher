@@ -53,9 +53,8 @@ edit file `linebot_pusher/app/linebotapi.py` to set `Bot_basic_id,Channel_secret
 
 # Config pusher
 ```
-edit file `linebot_pusher/app/views.py` to set `Bot_basic_id,Channel_secret,Channel_access_toke` in `line 21`
+edit file `pusher_center/app/views.py` to set `app_id,key,secret,cluster` in `line 21` 
 ```
-
 
 # Migrations
 ```
