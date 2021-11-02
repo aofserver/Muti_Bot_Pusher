@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pusher Test</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-main>
+        <h3 style="text-align: center;" >Pusher Test via <a href="https://line.me/R/ti/p/@678tbhfr">Linebot1</a> or <a href="https://line.me/R/ti/p/@771ftsqt">Linebot2</a></h3>
+        <h3 style="text-align: center;" ><a href="https://docs.google.com/spreadsheets/d/1QnODdL1FMAwKW9sFII7yZej5ko_QoDnp2HRsfwcDaI4/edit?usp=sharing">API Front-end</a></h3>
+        <div style="width: 90%; display: flex; margin: 20px auto;">
+          <v-text-field
+            style="width: 33.33%; height: 48px;"
+            :label="userData.platform"
+            solo
+            disabled
+          ></v-text-field>
+          <v-select
+            style="width: 33.33%; height: 48px;"
+            :items="bot.list"
+            label="BotId"
+            v-model="bot.selected"
+            @change="UpdateBot($event)"
+            solo
+          ></v-select>
+          <v-select
+            style="width: 33.33%; height: 48px;"
+            :items="user.list"
+            label="UserId"
+            v-model="user.selected"
+            @change="UpdateUser($event)"
+            solo
+          ></v-select>
+        </div>
+        <div style="width: 90%; display: flex; margin: 0 auto;">
+          <v-text-field
+            style="width: 70%; height: 48px;"
+            label="Message"
+            placeholder="Message"
+            v-model="message_box"
+            solo
+          ></v-text-field>
+          <v-btn style="width: 30%; height: 48px;" @click="SendMessage()">Send</v-btn>
+        </div>
+
+        <div style="margin: 0 0 20px 0;"></div>
+        
+        <v-card style="width: 90%; height: 100%; margin: 0 auto;">
+          <div style="padding: 20px;">
+            <div v-for="(item, index) in message">
+              <div v-if="item.status == 'input'" :style="css_message.input">
+                <p v-if="item.type_message == 'text'">${item.message}</p>
+                <img v-else-if="item.type_message == 'image'" :src="item.message" alt="image" style="width: 50%;">
+                <video v-else-if="item.type_message == 'video'" controls style="width: 50%;">
+                  <source :src="item.message" type="video/mp4">
+                </video>
+              </div>
+              <div v-else :style="css_message.output">
+                <p v-if="item.type_message == 'text'" style="margin: 0;">${item.message}</p>
+                <img v-else-if="item.type_message == 'image'" :src="item.message" alt="image" style="margin: 0; width: 50%;">
+                <video v-else-if="item.type_message == 'video'" controls style="margin: 0; width: 50%;">
+                  <source :src="item.message" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </v-card>
+        
+        
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      delimiters: ['${','}'],
+      vuetify: new Vuetify(),
+      data: {
+        // server:"http://127.0.0.1:8000",
+        server:"https://www.aofserverbot.online",
+        pusher: null,
+        channel: null,
+        triggered:null,
+        userData:{"userId":"UserId","botId":"BotId","platform":"line"},
+        userDataBuff:{"userId":"UserId","botId":"BotId","platform":"Platform"},
+        statusloading : {"messageloading":false},
+        message_box: "",
+        message: [],
+        css_message:{"input":"background-color: darkorange; border-radius: 50px; text-align: center; width: 50%;","output":"margin: 0 0 0 auto; background-color: lawngreen; border-radius: 50px; text-align: center; width: 50%;"},
+        bot:{"selected":'',"list":[]},
+        user:{"selected":'',"list":[]},
+        allmember:{},
+      },
+      mounted: function() {
+        Pusher.logToConsole = true;
+        this.Pusher('5e233fc432b782f0a272')
+
+        //fetch list member
+        this.LoadAllMember({}).then((res)=>{
+          this.allmember = res.data
+          this.bot.list = Object.keys(this.allmember)
+        })
+      },
+      methods: {
+        SendMessage(){
+          if (this.message.length > 0){
+            if(this.message_box.length > 0){
+              this.message.push({"status":"output","type_message":"text","message":this.message_box})
+              var data = {"platform":this.userData.platform,"idbot":this.bot.selected,"userId":this.userData.userId,"type_message":"text","message":this.message_box}
+              console.log("->",data)
+              this.triggered = this.channel.trigger("client-MessageUser", data);
+              this.message_box = ""
+            }
+            else{
+              alert("No Message!");
+            }
+          } 
+          else{
+            alert("Select bot and user.");
+          }
+        },
+        Pusher(app_key){
+          this.pusher = new Pusher(app_key, {cluster: 'ap1'});
+          this.channel = this.pusher.subscribe('private-ChannelBot');
+          this.channel.bind('client-MessageUser', (data) => {
+            console.log("<-",data)
+            this.userData = {"idbot":data.idbot,"userId":data.userId, "platform":data.platform}
+            console.log(data.idbot,this.userDataBuff.idbot,data.idbot === this.userDataBuff.idbot)
+            if(data.idbot == this.userDataBuff.idbot){
+              this.message.push({"status":"input","type_message":data.type_message,"message":data.message})
+            }
+            
+          });
+        },
+        UpdateBot(id){
+          this.message = [...[]]
+          this.user.selected = ''
+          this.user.list = Object.keys(this.allmember[id]["member"])
+        },
+        UpdateUser(userid){
+          this.message = [...[]]
+          this.userData = {"idbot":this.bot.selected,"userId":this.user.selected, "platform":'line'}
+          this.LoadHistoryMessage(this.userData).then((res)=>{
+            console.log(res.data)
+            for(var i=0;i<res.data.length;i++){
+              if(res.data[i].from === "admin"){
+                this.message.push({"status":"output", "type_message":res.data[i].type_message,"message":res.data[i].message.data})
+              }
+              else{
+                this.message.push({"status":"input","type_message":res.data[i].type_message,"message":res.data[i].message.data})
+              }
+            }
+            this.statusloading.messageloading = true
+            this.userDataBuff = {...this.userData}
+          })
+        },
+        LoadHistoryMessage(data){
+          return new Promise((resolve, reject) => {
+            const header = {"Content-Type": "application/json"};
+            axios.post(this.server+"/history_message", data, {
+              headers: header,
+            })
+            .then(function (res) {
+              resolve(res);
+            })
+            .catch(function (err) {
+              reject(err);
+            });
+          });
+        },
+        LoadAllMember(data){
+          return new Promise((resolve, reject) => {
+            const header = {"Content-Type": "application/json"};
+            axios.post(this.server+"/allmember", data, {
+              headers: header,
+            })
+            .then(function (res) {
+              resolve(res);
+            })
+            .catch(function (err) {
+              reject(err);
+            });
+          });
+        },
+
+      }
+    })
+  </script>
+</body>
+</html>
