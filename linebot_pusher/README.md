@@ -41,6 +41,12 @@ $ pip3 install -r requirements.txt
 edit file `linebot_pusher/core/settings.py` to set `host,user,password,database,port` in `line 96`
 ```
 
+# Config huawei cloud obs
+```
+edit file `linebot_pusher/app/huawei_cloud_obs.py` to set `host,user,password,database,port` in `line 26`
+```
+
+
 # Migrations
 ```
 $ python3 manage.py makemigrations
