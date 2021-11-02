@@ -98,8 +98,8 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.mysql', 
     #     'NAME': 'server_test',
     #     'USER': 'root',
-    #     'PASSWORD': 'v3nu55upp1y',
-    #     'HOST': '178.128.87.57',   # Or an IP Address that your DB is hosted on
+    #     'PASSWORD': '',
+    #     'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
     #     'PORT': '3306',
     # }
 }
