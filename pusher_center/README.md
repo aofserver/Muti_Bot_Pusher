@@ -41,6 +41,11 @@ $ pip3 install -r requirements.txt
 edit file `pusher_center/app/database.py` to set `host,user,password,database,port`
 ```
 
+# Config pusher
+```
+edit file `pusher_center/app/views.py` to set `app_id,key,secret,cluster` in `line 16` 
+```
+
 # Run
 ```
 $ python3 manage.py runserver 0.0.0.0:8000
